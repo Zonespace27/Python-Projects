@@ -5,7 +5,7 @@ from glob import glob
 
 reg_dict = {}
 sorted_list = ()
-allfiles = []
+all_files = []
 output_location = "log_reader/outputfile.txt"
 
 # Cuts out the item using regex
@@ -29,14 +29,14 @@ def add_to_dict(added):
 
 # Writes to the output file with the data and the number provided
 def write_to_file(to_write):
-    writefile = open(output_location, "a")
+    write_file = open(output_location, "a")
     str_write = "\n"
     for item in to_write:
         str_write = str_write + ' ' + str(item)
         if str_write == "\n None": #Just getting malformed entries out of the question
             return
-    writefile.write(str_write)
-    writefile.close()
+    write_file.write(str_write)
+    write_file.close()
 
 # Do the regex and list sorting on each file iteration
 def per_file_iteration(file_name):
@@ -44,16 +44,16 @@ def per_file_iteration(file_name):
     reg_check = re.search("uplink\.log", file_name)
     if reg_check is None:
         return
-    textoutput = open(file_name, "r")
-    linelist = textoutput.readlines()
+    text_output = open(file_name, "r")
+    line_list = text_output.readlines()
 
-    res = [regex_act(i) for i in linelist]
+    res = [regex_act(i) for i in line_list]
 
     output = [add_to_dict(i) for i in res]
 
     sorted_list = sorted(reg_dict.items(), key=lambda x: x[1], reverse=True)
 
-    textoutput.close()
+    text_output.close()
 
 recurse_dir = glob("**/", recursive = True)
 
@@ -61,12 +61,12 @@ file_clear = open(output_location, "w")
 file_clear.close()
 
 for dir in recurse_dir:
-    onlyfiles = [f for f in listdir(dir) if isfile(join(dir, f))]
+    only_files = [f for f in listdir(dir) if isfile(join(dir, f))]
     compiled_files = []
-    for file in onlyfiles:
+    for file in only_files:
         file = dir + str(file)
         compiled_files.append(file)
-    allfiles.extend(compiled_files)
+    all_files.extend(compiled_files)
 
-the_end = [per_file_iteration(i) for i in allfiles]
+the_end = [per_file_iteration(i) for i in all_files]
 the_end_actually = [write_to_file(i) for i in sorted_list]
