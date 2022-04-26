@@ -19,7 +19,7 @@ def regex_act(actor):
         return
     return rex2[0]
 
-# adds the item and how much it's been bought to reg_dict
+# Adds the item and how much it's been bought to reg_dict
 def add_to_dict(added):
     if added in reg_dict:
         dict_num = reg_dict[added]
@@ -27,6 +27,7 @@ def add_to_dict(added):
     else:
         reg_dict[added] = 1
 
+# Writes to the output file with the data and the number provided
 def write_to_file(to_write):
     writefile = open(output_location, "a")
     str_write = "\n"
@@ -37,8 +38,12 @@ def write_to_file(to_write):
     writefile.write(str_write)
     writefile.close()
 
+# Do the regex and list sorting on each file iteration
 def per_file_iteration(file_name):
     global sorted_list
+    reg_check = re.search("uplink\.log", file_name)
+    if reg_check is None:
+        return
     textoutput = open(file_name, "r")
     linelist = textoutput.readlines()
 
