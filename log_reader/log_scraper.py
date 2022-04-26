@@ -57,6 +57,9 @@ def per_file_iteration(file_name):
 
 recurse_dir = glob("**/", recursive = True)
 
+file_clear = open(output_location, "w")
+file_clear.close()
+
 for dir in recurse_dir:
     onlyfiles = [f for f in listdir(dir) if isfile(join(dir, f))]
     compiled_files = []
