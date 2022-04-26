@@ -1,20 +1,20 @@
-from asyncore import write
-from cgitb import text
-from fileinput import close
 import re
 from os import listdir
 from os.path import isfile, join
+from glob import glob
 
 reg_dict = {}
 sorted_list = ()
+allfiles = []
+output_location = "log_reader/outputfile.txt"
 
 # Cuts out the item using regex
 def regex_act(actor):
-    rex1 = re.split("purchased\s", actor)
+    rex1 = re.split("\spurchased\s", actor)
     if len(rex1) != 2:
         return
     rex1_string = rex1[1]
-    rex2 = re.split("\sfor", rex1_string)
+    rex2 = re.split("\sfor\s", rex1_string)
     if len(rex2) != 2:
         return
     return rex2[0]
@@ -28,7 +28,7 @@ def add_to_dict(added):
         reg_dict[added] = 1
 
 def write_to_file(to_write):
-    writefile = open("log_reader/outputfile.txt", "a")
+    writefile = open(output_location, "a")
     str_write = "\n"
     for item in to_write:
         str_write = str_write + ' ' + str(item)
@@ -39,8 +39,7 @@ def write_to_file(to_write):
 
 def per_file_iteration(file_name):
     global sorted_list
-    compiled_file = "log_reader/text_inputs/" + file_name
-    textoutput = open(compiled_file, "r")
+    textoutput = open(file_name, "r")
     linelist = textoutput.readlines()
 
     res = [regex_act(i) for i in linelist]
@@ -50,8 +49,16 @@ def per_file_iteration(file_name):
     sorted_list = sorted(reg_dict.items(), key=lambda x: x[1], reverse=True)
 
     textoutput.close()
-    return
 
-onlyfiles = [f for f in listdir("log_reader/text_inputs") if isfile(join("log_reader/text_inputs", f))]
-the_end = [per_file_iteration(i) for i in onlyfiles]
+recurse_dir = glob("**/", recursive = True)
+
+for dir in recurse_dir:
+    onlyfiles = [f for f in listdir(dir) if isfile(join(dir, f))]
+    compiled_files = []
+    for file in onlyfiles:
+        file = dir + str(file)
+        compiled_files.append(file)
+    allfiles.extend(compiled_files)
+
+the_end = [per_file_iteration(i) for i in allfiles]
 the_end_actually = [write_to_file(i) for i in sorted_list]

@@ -1,1 +1,0 @@
-- Adapt the system to skyrat/TG's file structure by making it search all folders and their folders, etc. only reading uplink.log files
