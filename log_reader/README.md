@@ -1,6 +1,6 @@
 # Log Reader
 
-A log used to read TGStation-based logs and extract whatever string you'd like for them. Default is to search for `uplink.log` files and extract how often uplink items are bought.
+A log processor used to read TGStation-based logs and extract whatever string you'd like for them. Default is to search for `uplink.log` files and extract how often uplink items are bought.
 
 ## Steps for use
 - Set `output_location` to `outputfile.txt`
