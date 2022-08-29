@@ -1,0 +1,36 @@
+{
+    "Start": {
+        "name": "Start Room",
+        "desc": "You see ???",
+        "pre_objects": [
+
+        ],
+        "pre_items": [
+            "Apple",
+            "Apple",
+            "Apple",
+            "Apple",
+            "Apple"
+        ]
+    },   
+    "Debug": {
+        "name": "Debug Room",
+        "desc": "You see an endless void of blinding white.",
+        "pre_objects": [
+
+        ],
+        "pre_items": [
+            "Apple"
+        ]
+    },
+    "Debug2": {
+        "name": "Debug Room (two)",
+        "desc": "You see even more endless void of blinding white.",
+        "pre_objects": [
+
+        ],
+        "pre_items": [
+            "Orange"
+        ]
+    }
+}

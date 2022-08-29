@@ -1,0 +1,2 @@
+Contains all the data for items/objects/rooms/whatever
+If anything has `"on_enter": ""`, leave it (and apply it to any future json entries in the file), it is required to not runtime the fuck out of the code (the do_enter function in object.py)

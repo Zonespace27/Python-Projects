@@ -1,0 +1,4 @@
+This folder doesn't have anything that's used, it's just un-compressed code from the json for readability and debugging
+single quotes only because of how JSON works
+
+TODO: refactor all of this now that early returns work

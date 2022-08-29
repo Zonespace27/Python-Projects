@@ -1,0 +1,15 @@
+{
+    "Door": {
+        "name": "Door",
+        "desc": "You see a wooden door.",
+        "on_enter": "",
+        "verbs": {
+            "open": "import globals\nprint('You go through the door.')\nplayer_class.last_used_door = object_class.matching_door\nglobals.manager.move_room(object_class.matching_door.in_room)"
+        }
+    },
+    "Landmine": {
+        "name": "Landmine",
+        "desc": "It's a- OH SHIT",
+        "on_enter": "print('The landmine goes boom.')\nplayer_class.health -= 10\nprint(player_class.health)\ndel self"
+    }
+}

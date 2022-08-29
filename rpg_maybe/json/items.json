@@ -1,0 +1,16 @@
+{
+    "Apple": {
+        "name": "Apple",
+        "desc": "You see an apple.",
+        "verbs": {
+            "eat": "print('You eat the apple.')\nplayer_class.adjust_health(5)\nif object_class in player_class.inventory:\n\tplayer_class.inventory.remove(object_class)",
+            "consume": "print('You eat the apple.')\nplayer_class.adjust_health(5)\nif object_class in player_class.inventory:\n\tplayer_class.inventory.remove(object_class)"
+        },
+        "on_enter": ""
+    },
+    "Orange": {
+        "name": "Orange",
+        "desc": "You see an orange.",
+        "on_enter": ""
+    }
+}
