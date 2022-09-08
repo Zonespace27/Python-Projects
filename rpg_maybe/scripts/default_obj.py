@@ -23,5 +23,10 @@ def take_object(self, player_class, object_class):
 
 # import object\nimport exec\nif object_class in player_class.inventory:\n\tprint('There do not seem to be any of those around.')\n\traise exec.ExecInterrupt\nif not isinstance(object_class, object.Item):\n\tprint('You cannot pick this up.')\n\traise exec.ExecInterrupt\nplayer_class.add_to_inventory(object_class)\nprint('You pick up ' + object_class.name + ', putting it into your backpack.')
 
-# old version, don't keep too long
-# import globals\nimport object\ncurrent_room = globals.id_to_room[player_class.current_room]\nif object_class not in player_class.inventory:\n\tif isinstance(object_class, object.Item):\n\t\tcurrent_room.items.remove(object_class)\n\t\tcurrent_room.all_things.remove(object_class)\n\t\tplayer_class.inventory.append(object_class)\n\t\tprint('You pick up ' + object_class.name + ', putting it into your backpack.')\n\telse:\n\t\tprint('You cannot pick this up.')\nelse:\n\tprint('There do not seem to be any of those around.')
+def examine_object(self, player_class, object_class):
+    if hasattr(object_class, 'extended_desc'):
+        print(object_class.extended_desc)
+    else:
+        print('You cannot see anything remarkable about this.')
+
+# if hasattr(object_class, 'extended_desc'):\n\tprint(object_class.extended_desc)\nelse:\n\tprint('You cannot see anything remarkable about this.')

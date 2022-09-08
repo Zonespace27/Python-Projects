@@ -2,15 +2,29 @@
     "Apple": {
         "name": "Apple",
         "desc": "You see an apple.",
+        "extended_desc": "Upon closer inspection, you see a surprisingly in-tact apple (considering its environment) of the red variety. Might keep a skeleton doctor at bay.",
         "verbs": {
-            "eat": "print('You eat the apple.')\nplayer_class.adjust_health(5)\nif object_class in player_class.inventory:\n\tplayer_class.inventory.remove(object_class)",
-            "consume": "print('You eat the apple.')\nplayer_class.adjust_health(5)\nif object_class in player_class.inventory:\n\tplayer_class.inventory.remove(object_class)"
-        },
-        "on_enter": ""
+            "eat": "print('You eat the apple. You feel a bit refreshed.')\nplayer_class.adjust_health(5)\nplayer_class.inventory.remove(object_class)",
+            "consume": "print('You eat the apple. You feel a bit refreshed.')\nplayer_class.adjust_health(5)\nplayer_class.inventory.remove(object_class)"
+        }
     },
     "Orange": {
         "name": "Orange",
         "desc": "You see an orange.",
-        "on_enter": ""
+        "extended_desc": "Looking closer at the orange, you realize that it is in fact a shade of pumpkin!",
+        "verbs": {
+            "eat": "print('You eat the orange. You do not feel much better, though.')\nplayer_class.inventory.remove(object_class)",
+            "consume": "print('You eat the orange. You do not feel much better, though.')\nplayer_class.inventory.remove(object_class)"
+        }
+    },
+    "Experience Potion": {
+        "name": "Potion",
+        "desc": "You see a faintly luminescent potion.",
+        "extended_desc": "It's a glass bottle with a cap made of cork, the insides swirl with a light green glow, illuminating its surroundings faintly.",
+        "verbs": {
+            "drink": "print('You drink the potion, gaining some experience.')\nplayer_class.add_exp(10)\nplayer_class.inventory.remove(object_class)",
+            "consume": "print('You drink the potion, gaining some experience.')\nplayer_class.add_exp(10)\nplayer_class.inventory.remove(object_class)",
+            "chug": "print('You drink the potion, gaining some experience.')\nplayer_class.add_exp(10)\nplayer_class.inventory.remove(object_class)"
+        }
     }
 }

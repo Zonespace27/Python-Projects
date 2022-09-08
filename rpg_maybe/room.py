@@ -2,6 +2,7 @@ from functools import cache
 from json import load
 import object
 import globals
+import exec
 
 # Basic, un-inherited room (not that you should need to make a child of it)
 class Room():
@@ -18,6 +19,8 @@ class Room():
         globals.max_room_id += 1
         self.objects = []
         self.items = []
+        self.entities = []
+        self.enemies = []
         self.all_things = []
         self.grid_coordinates = []
         for obj_name in self.pre_objects:
@@ -29,7 +32,9 @@ class Room():
     def on_enter(self, player_class):
         self.room_examine()
         for object in self.all_things:
-            object.do_enter(player_class)
+            if hasattr(object, "on_enter"): # the on/do enter difference is intentional
+                object.do_enter(player_class)
+
     
     def room_examine(self):
         print(self.desc)
@@ -49,6 +54,7 @@ class Room():
 
     
     def add_item(self, item_class):
+        self.objects.append(item_class)
         self.items.append(item_class)
         self.all_things.append(item_class)
         self.recalculate_temporary_assignment(self.all_things)
@@ -58,7 +64,30 @@ class Room():
         self.all_things.append(object_class)
         self.recalculate_temporary_assignment(self.all_things)
     
+    def add_entity(self, entity_class):
+        self.entities.append(entity_class)
+        self.all_things.append(entity_class)
+        self.recalculate_temporary_assignment(self.all_things)
+    
+    def add_enemy(self, enemy_class):
+        self.entities.append(enemy_class)
+        self.enemies.append(enemy_class)
+        self.all_things.append(enemy_class)
+        self.recalculate_temporary_assignment(self.all_things)
+    
+    def remove_enemy(self, enemy_class):
+        self.entities.remove(enemy_class)
+        self.enemies.remove(enemy_class)
+        self.all_things.remove(enemy_class)
+        self.recalculate_temporary_assignment(self.all_things)
+
+    def remove_entity(self, entity_class):
+        self.entities.remove(entity_class)
+        self.all_things.remove(entity_class)
+        self.recalculate_temporary_assignment(self.all_things)
+
     def remove_item(self, item_class):
+        self.objects.remove(item_class)
         self.items.remove(item_class)
         self.all_things.remove(item_class)
         self.recalculate_temporary_assignment(self.all_things)
@@ -68,7 +97,7 @@ class Room():
         self.all_things.remove(object_class)
         self.recalculate_temporary_assignment(self.all_things)
 
-
+    # Depreciated, remove later when there's definitely nothing to recover from this
     def recalc_temp_names(self, list_to_recalc):
         amount_list = globals.object_amounts(list_to_recalc)
         for thing in list_to_recalc:

@@ -1,0 +1,8 @@
+{
+    "Slime": {
+        "name": "Slime",
+        "desc": "You see a green slime!",
+        "extended_desc": "An amorphous blob typically found in places where hygiene is priority four.",
+        "max_health": 10
+    }
+}

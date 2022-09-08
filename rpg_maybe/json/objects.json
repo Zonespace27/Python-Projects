@@ -2,7 +2,7 @@
     "Door": {
         "name": "Door",
         "desc": "You see a wooden door.",
-        "on_enter": "",
+        "extended_desc": "Sometimes, you've gotta question 'How did I get here?'",
         "verbs": {
             "open": "import globals\nprint('You go through the door.')\nplayer_class.last_used_door = object_class.matching_door\nglobals.manager.move_room(object_class.matching_door.in_room)"
         }
@@ -10,6 +10,7 @@
     "Landmine": {
         "name": "Landmine",
         "desc": "It's a- OH SHIT",
-        "on_enter": "print('The landmine goes boom.')\nplayer_class.health -= 10\nprint(player_class.health)\ndel self"
+        "extended_desc": "Sometimes, you've gotta question 'How did I get here?'",
+        "on_enter": "import globals\nprint('The landmine explodes in your face!')\nplayer_class.adjust_health(-50)\ncurrent_room = globals.id_to_room[player_class.current_room]\ncurrent_room.remove_object(object_class)"
     }
 }

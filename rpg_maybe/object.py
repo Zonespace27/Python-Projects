@@ -1,6 +1,6 @@
 from json import load
-from random import randint
 import exec
+import globals
 
 # A thing you can hold, interact with, whatever.
 class Object():
@@ -16,18 +16,11 @@ class Object():
         # Do not depend on this for data storage, can change on a dime
         self.temporary_name = self.name
         self.assignment_number = -1
-        self.make_random_id()
-
-    def make_random_id(self):
-        self.unique_id = ""
-        for i in range(8): # probably a safe number
-            self.unique_id += str(randint(0, 9))
-        self.unique_id = int(self.unique_id)
-
+        globals.make_random_id(self)
     
     # What the object performs when you enter the room (besides description)
     def do_enter(self, player_class):
-        exec.Exec(self.on_enter, {}, {"player_class": player_class})
+        exec.Exec(self.on_enter, {}, {"player_class": player_class, "object_class": self})
             
 
 # Subclass, only objects you can hold and store

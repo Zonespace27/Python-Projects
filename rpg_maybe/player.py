@@ -16,6 +16,9 @@ class Player():
     }
     last_used_door = None
     dead = False
+    level = 1
+    exp = 0
+    exp_to_level = 50
 
 
     def __init__(self):
@@ -34,7 +37,7 @@ class Player():
         if self.dead == True:
             return
         self.parse_string(input("What would you like to do?\n"))
-        system('cls')
+        #system('cls') #doesn't work because system never yields between input-code-input-code
 
     def parse_string(self, input_text):
         santized_text = re.sub(r"\b(and|a|or|the|an|is|at|to)\b", "", input_text, 0, re.IGNORECASE)
@@ -59,7 +62,7 @@ class Player():
         verb = ""
         exclusion_num = 2 if len(maybe_selector) != 0 else 1
         for word in words:
-            if word == words[len(words) - exclusion_num] or word == words[len(words) - 1]: # THE TECHNICAL DEBT GROWS
+            if word == words[len(words) - exclusion_num] or word == words[len(words) - 1]: # THE TECHNICAL DEBT GROWS #technical debt loss #1: items must be one-word names
                 continue
             verb += word.lower()
             #verb += ' ' if word != words[len(words) - 2] else ''
@@ -139,3 +142,14 @@ class Player():
         for item in self.inventory:
             compiled_list.append(item.unique_id)
         return compiled_list
+    
+    def add_exp(self, exp_amount = 0):
+        self.exp += exp_amount
+        if self.exp >= self.exp_to_level:
+            self.level_up()
+
+    def level_up(self):
+        self.exp = 0
+        self.exp_to_level = round(self.exp_to_level ** 1.1) # Unsure what to convert this to, player var, global, or constant?
+        self.level += 1
+        self.max_health += 10 # shit at scaling but maybe armor will help?

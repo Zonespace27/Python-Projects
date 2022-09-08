@@ -25,12 +25,14 @@ def initialize():
 
     global default_drop_verb
     global default_take_verb
+    global default_examine_verb
 
     # The one-line code for dropping objects (scripts/default_obj.py)
     default_drop_verb = "import globals\nimport object\ncurrent_room = globals.id_to_room[player_class.current_room]\nif object_class not in current_room.items and object_class not in current_room.objects:\n\tplayer_class.inventory.remove(object_class)\n\tif isinstance(object_class, object.Item):\n\t\tcurrent_room.items.append(object_class)\n\telse:\n\t\tcurrent_room.objects.append(object_class)\n\tcurrent_room.all_things.append(object_class)\n\tprint('You drop ' + object_class.name + '.')\nelse:\n\tprint('You do not seem to have any of that.')"
     # The code for picking up objects (scripts/default_obj.py)
     default_take_verb = "import object\nimport exec\nif object_class in player_class.inventory:\n\tprint('There do not seem to be any of those around.')\n\traise exec.ExecInterrupt\nif not isinstance(object_class, object.Item):\n\tprint('You cannot pick this up.')\n\traise exec.ExecInterrupt\nplayer_class.add_to_inventory(object_class)\nprint('You pick up ' + object_class.name + ', putting it into your backpack.')"
-
+    # Code for close-examining objects (scripts/default_obj.py)
+    default_examine_verb = "if hasattr(object_class, 'extended_desc'):\n\tprint(object_class.extended_desc)\nelse:\n\tprint('You cannot see anything remarkable about this.')"
 
     global default_obj_verbs
     # Verbs that apply to all objects
@@ -43,6 +45,9 @@ def initialize():
         "grab": default_take_verb,
         "obtain": default_take_verb,
         "pick up": default_take_verb,
+        # Examine
+        "examine": default_examine_verb,
+        "look": default_examine_verb,
     }
     
     # Self globals
@@ -66,3 +71,10 @@ def object_amounts(the_list):
             continue
         cached_names[object.original_name] = 0
     return cached_names
+
+def make_random_id(to_id):
+    from random import randint
+    to_id.unique_id = ""
+    for i in range(8): # probably a safe number
+        to_id.unique_id += str(randint(0, 9))
+    to_id.unique_id = int(to_id.unique_id)

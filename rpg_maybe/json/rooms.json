@@ -3,21 +3,22 @@
         "name": "Start Room",
         "desc": "You see ???",
         "pre_objects": [
-
+            
         ],
         "pre_items": [
             "Apple",
             "Apple",
             "Apple",
             "Apple",
-            "Apple"
+            "Apple",
+            "Experience Potion"
         ]
     },   
     "Debug": {
         "name": "Debug Room",
         "desc": "You see an endless void of blinding white.",
         "pre_objects": [
-
+            "Landmine"
         ],
         "pre_items": [
             "Apple"
