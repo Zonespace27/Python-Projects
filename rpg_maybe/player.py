@@ -19,7 +19,7 @@ class Player():
     level = 1
     exp = 0
     exp_to_level = 50
-
+    equipped_weapon = None
 
     def __init__(self):
         # Must be in init to prevent immediate runtiming

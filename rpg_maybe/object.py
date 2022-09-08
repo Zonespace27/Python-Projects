@@ -30,6 +30,12 @@ class Item(Object):
     verbs = {}
     json_location = 'rpg_maybe/json/items.json'
 
+# Subclass of a subclass, used for things that you can use as melee weaponry
+class Weapon(Item):
+    name = "Weapon Parent"
+    desc = "Use your imagination!"
+    json_location = 'rpg_maybe/json/weapons.json'
+
 #if __name__ == "__main__":
 #    y = player.Player()
 #    x = Object('Landmine')

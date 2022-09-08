@@ -63,6 +63,13 @@ def initialize():
     # Verb for re-checking the room you're in
     self_room_check = "import globals\nthe_room = globals.id_to_room[player_class.current_room]\nthe_room.room_examine()"
 
+    # Entity globals
+    
+    global attack_entity
+
+    # Verb for attacking enemies
+    attack_entity = ""
+
 def object_amounts(the_list):
     cached_names = {}
     for object in the_list:

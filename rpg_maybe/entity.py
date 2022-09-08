@@ -14,6 +14,16 @@ class Entity():
         self.temporary_name = self.name
         self.assignment_number = -1
         globals.make_random_id(self)
+        self.verbs["attack"] = globals.attack_entity
+    
+    def on_attack(self, player_class, damage_amount = 0):
+        self.health -= damage_amount
+        if self.health <= 0:
+            self.on_death()
+        print("You attack " + self.name + " with " + player_class.equipped_weapon + ".")
+    
+    def on_death(self):
+        pass
 
 class Hostile(Entity):
     json_location = 'rpg_maybe/json/enemies.json'

@@ -86,4 +86,3 @@ class Room_Manager():
 
 # First, room checks current grid tile for anything
 # if nothing, it places then sends the manager the grid tile it occupies
-# 

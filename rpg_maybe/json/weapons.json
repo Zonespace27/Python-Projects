@@ -1,0 +1,8 @@
+{
+    "Stick": {
+        "name": "Stick",
+        "desc": "You see a rotting wooden stick.",
+        "extended_desc": "It's a stick that seems more than a little moist, you're not sure how good this'd be in a fight...",
+        "damage": 5
+    }
+}
