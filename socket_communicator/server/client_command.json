@@ -1,0 +1,27 @@
+{
+    "Help": {
+        "name": "help",
+        "desc": "A list of possible commands",
+        "on_exec": "compiled_string = ''\nfor command_name in server_class.name_to_command:\n\tcommand_class = server_class.name_to_command.get(command_name)\n\tcompiled_string += command_class.name + ': ' + command_class.desc + (', ' if command_name != list(server_class.name_to_command)[len(server_class.name_to_command) - 1] else '')\nserver_class.sendall_wrapper(executor, {'output': compiled_string})"
+    },
+    "AdminPerms": {
+        "name": "grant_admin",
+        "desc": "Grant yourself admin permissions with the correct password",
+        "on_exec": "import exec\nif executor in server_class.administrators:\n\tserver_class.sendall_wrapper(executor, {'output': 'Administrator perms already granted.'})\n\traise exec.ExecInterrupt\nif argument == server_class.admin_pass:\n\tserver_class.add_admin(executor)\n\tserver_class.sendall_wrapper(executor, {'output': 'Permissions granted.'})\nelse:\n\tserver_class.sendall_wrapper(executor, {'output': 'Invalid password.'})"
+    },
+    "ChangeName": {
+        "name": "change_name",
+        "desc": "Change your name",
+        "on_exec": "import re\nimport exec\ncleaned_name = re.sub('\"|b\"| ', '', argument)[:20]\nif server_class.verify_name(executor, cleaned_name) == False:\n\traise exec.ExecInterrupt\nserver_class.recieve_name_change(executor, cleaned_name)\nserver_class.sendall_wrapper(executor, {'output': 'Your name has been changed to: ' + cleaned_name + '.'})"
+    },
+    "Who": {
+        "name": "who",
+        "desc": "List all currently connected clients",
+        "on_exec": "compiled_string = ''\nserver_class.sendall_wrapper(executor, {'output': 'Total connected: ' + str(len(server_class.socket_to_name))})\nfor name in server_class.socket_to_name.values():\n\tcompiled_string += name + (', ' if name != list(server_class.socket_to_name.values())[len(server_class.socket_to_name) - 1] else '')\nserver_class.sendall_wrapper(executor, {'output': compiled_string})"
+    },
+    "ChangeColor": {
+        "name": "change_color",
+        "desc": "Change your name color ('red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'reset')",
+        "on_exec": "import exec\npossible_colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']\nargument = argument.lower()\nif argument == 'reset':\n\tserver_class.socket_to_color.pop(executor)\n\traise exec.ExecInterrupt\nif argument in possible_colors:\n\tserver_class.socket_to_color[executor] = argument\n\tserver_class.sendall_wrapper(executor, {'output': 'Your color is now ' + argument + '.'})\n\traise exec.ExecInterrupt\nserver_class.sendall_wrapper(executor, {'output': 'Color not found.'})"
+    }
+}
