@@ -1,0 +1,14 @@
+{
+    "wall": {
+        "name": "Wall",
+        "desc": "Something you probably can't get through.",
+        "dense": 1,
+        "layer_priority": 1
+    },
+    "player": {
+        "name": "Player",
+        "desc": "That's you!",
+        "dense": 1,
+        "layer_priority": 10
+    }
+}
