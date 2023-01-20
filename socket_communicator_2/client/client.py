@@ -8,6 +8,7 @@ import socket
 import string
 import sys
 import threading
+import time
 
 class Client():
     """
@@ -54,8 +55,7 @@ class Client():
         self.name = ""
 
         # Dict of text on a line + time.time() : text on a line
-        # Mid rework to just be text on a line in a list
-        self.line_text: list = []
+        self.line_text = {}
 
         # The set of currently written out characters
         self.inputted_characters = ""
@@ -131,13 +131,13 @@ class Client():
         Adds text to the screen, in addition to adding it to the `line_text` list with a timestamp. \n
         Do not call over `line_text_multiline_check`.
         """
-        #unix_stamp_text = f"{text_to_add} {str(time.time())}"
-        self.line_text.append(text_to_add)
+        unix_stamp_text = f"{text_to_add} {str(time.time())}"
+        self.line_text[unix_stamp_text] = text_to_add
         if len(self.line_text) > self.text_end:
             self.move_up_lines(1)
 
         else:
-            self.main_screen.addstr(*self.get_yx(self.y_size - self.line_text.index(text_to_add), 0), text_to_add) # The "*" is used for unpacking a tuple into two sequential entries
+            self.main_screen.addstr(*self.get_yx(self.y_size - list(self.line_text.keys()).index(unix_stamp_text), 0), text_to_add) # The "*" is used for unpacking a tuple into two sequential entries
             
         self.main_screen.refresh()
     
@@ -147,19 +147,16 @@ class Client():
         Move up the lines on the screen by `move_amount` lines.
         Moved messages are currently entirely deleted.
         """
-        #line_text_keys = list(self.line_text.keys())
-        #line_text_values = list(self.line_text.values())
-        #line_text_keys = line_text_keys[move_amount:] 
-        #line_text_values = line_text_values[move_amount:]
-
-        #copy_line_text = self.line_text.copy()[move_amount:]
-
-        self.line_text = self.line_text[move_amount:]
-        #for key in copy_line_text:
-        #    self.line_text[key] = line_text_values[line_text_keys.index(key)] 
+        line_text_keys = list(self.line_text.keys())
+        line_text_values = list(self.line_text.values())
+        line_text_keys = line_text_keys[move_amount:] 
+        line_text_values = line_text_values[move_amount:]
+        self.line_text = {}
+        for key in line_text_keys:
+            self.line_text[key] = line_text_values[line_text_keys.index(key)] 
         
         for string in self.line_text:
-            self.main_screen.addstr(*self.get_yx(self.y_size - self.line_text.index(string), 0), string) # Newest at bottom, oldest at top
+            self.main_screen.addstr(*self.get_yx(self.y_size - list(self.line_text.keys()).index(string), 0), self.line_text[string]) # Newest at bottom, oldest at top
 
         self.main_screen.refresh()
     
@@ -181,10 +178,10 @@ class Client():
         
         # Please clear screen prior to calling with add_messages as True
         if add_messages:
-            copy_list = self.line_text.copy()
-            self.line_text = []
-            for entry in copy_list:
-                self.add_line_text(entry)
+            value_list = self.line_text.values()
+            self.line_text = {}
+            for value in value_list:
+                self.add_line_text(value)
     
 
     # Returning True means the message will attempt to send

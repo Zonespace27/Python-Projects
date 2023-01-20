@@ -1,5 +1,6 @@
 from exec import Exec
 import re
+from server import Server as Serv
 import threading
 import time
 
@@ -14,7 +15,7 @@ class MessageHandler():
 
     server = None
 
-    def __init__(self, server_reference):
+    def __init__(self, server_reference: Serv):
         self.server = server_reference
 
         new_thread = threading.Thread(target=self.begin_handling_loop)
