@@ -14,10 +14,24 @@ def command_help(executor, server_class, argument):
     compiled_string = ''
     for command_name in server_class.name_to_command:
         command_class = server_class.name_to_command.get(command_name)
+        if command_class.admin_only:
+            continue
         compiled_string += command_class.name + ': ' + command_class.desc + (', ' if command_name != list(server_class.name_to_command)[len(server_class.name_to_command) - 1] else '')
     server_class.sendall_wrapper(executor, {'output': compiled_string})
 
-# "compiled_string = ''\nfor command_name in server_class.name_to_command:\n\tcommand_class = server_class.name_to_command.get(command_name)\n\tcompiled_string += command_class.name + ': ' + command_class.desc + (', ' if command_name != list(server_class.name_to_command)[len(server_class.name_to_command) - 1] else '')\nserver_class.sendall_wrapper(executor, {'output': compiled_string})"
+# "compiled_string = ''\nfor command_name in server_class.name_to_command:\n\tcommand_class = server_class.name_to_command.get(command_name)\n\tif command_class.admin_only:\n\t\tcontinue\n\tcompiled_string += command_class.name + ': ' + command_class.desc + (', ' if command_name != list(server_class.name_to_command)[len(server_class.name_to_command) - 1] else '')\nserver_class.sendall_wrapper(executor, {'output': compiled_string})"
+
+# Displays admin commands
+def command_adminhelp(executor, server_class, argument):
+    compiled_string = ''
+    for command_name in server_class.name_to_command:
+        command_class = server_class.name_to_command.get(command_name)
+        if not command_class.admin_only:
+            continue
+        compiled_string += command_class.name + ': ' + command_class.desc + (', ' if command_name != list(server_class.name_to_command)[len(server_class.name_to_command) - 1] else '')
+    server_class.sendall_wrapper(executor, {'output': compiled_string})
+
+# "compiled_string = ''\nfor command_name in server_class.name_to_command:\n\tcommand_class = server_class.name_to_command.get(command_name)\n\tif not command_class.admin_only:\n\t\tcontinue\n\tcompiled_string += command_class.name + ': ' + command_class.desc + (', ' if command_name != list(server_class.name_to_command)[len(server_class.name_to_command) - 1] else '')\nserver_class.sendall_wrapper(executor, {'output': compiled_string})"
 
 # For being granted superuser perms to ban and what have you
 def command_admin_access(executor, server_class, argument):
@@ -55,18 +69,8 @@ def command_who(executor, server_class, argument):
 
 # "compiled_string = ''\nserver_class.sendall_wrapper(executor, {'output': 'Total connected: ' + str(len(server_class.socket_to_name))})\nfor name in server_class.socket_to_name.values():\n\tcompiled_string += name + (', ' if name != list(server_class.socket_to_name.values())[len(server_class.socket_to_name) - 1] else '')\nserver_class.sendall_wrapper(executor, {'output': compiled_string})"
 
-# Change your name color
-def command_name_color(executor, server_class, argument):
-    import exec
-    possible_colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
-    argument = argument.lower()
-    if argument == 'reset':
-        server_class.socket_to_color.pop(executor)
-        raise exec.ExecInterrupt
-    if argument in possible_colors:
-        server_class.socket_to_color[executor] = argument
-        server_class.sendall_wrapper(executor, {'output': 'Your color is now ' + argument + '.'})
-        raise exec.ExecInterrupt
-    server_class.sendall_wrapper(executor, {'output': 'Color not found.'})
+# View the MOTD
+def command_motd(executor, server_class, argument):
+    server_class.sendall_wrapper(executor, {'output': server_class.message_of_the_day})
 
-# "import exec\npossible_colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']\nargument = argument.lower()\nif argument == 'reset':\n\tserver_class.socket_to_color.pop(executor)\n\traise exec.ExecInterrupt\nif argument in possible_colors:\n\tserver_class.socket_to_color[executor] = argument\n\tserver_class.sendall_wrapper(executor, {'output': 'Your color is now ' + argument + '.'})\n\traise exec.ExecInterrupt\nserver_class.sendall_wrapper(executor, {'output': 'Color not found.'})"
+# "server_class.sendall_wrapper(executor, {'output': server_class.message_of_the_day})"

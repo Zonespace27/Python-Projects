@@ -2,7 +2,12 @@
     "Help": {
         "name": "help",
         "desc": "A list of possible commands",
-        "on_exec": "compiled_string = ''\nfor command_name in server_class.name_to_command:\n\tcommand_class = server_class.name_to_command.get(command_name)\n\tcompiled_string += command_class.name + ': ' + command_class.desc + (', ' if command_name != list(server_class.name_to_command)[len(server_class.name_to_command) - 1] else '')\nserver_class.sendall_wrapper(executor, {'output': compiled_string})"
+        "on_exec": "compiled_string = ''\nfor command_name in server_class.name_to_command:\n\tcommand_class = server_class.name_to_command.get(command_name)\n\tif command_class.admin_only:\n\t\tcontinue\n\tcompiled_string += command_class.name + ': ' + command_class.desc + (', ' if command_name != list(server_class.name_to_command)[len(server_class.name_to_command) - 1] else '')\nserver_class.sendall_wrapper(executor, {'output': compiled_string})"
+    },
+    "AdminHelp": {
+        "name": "adminhelp",
+        "desc": "A list of admin commands",
+        "on_exec": "compiled_string = ''\nfor command_name in server_class.name_to_command:\n\tcommand_class = server_class.name_to_command.get(command_name)\n\tif not command_class.admin_only:\n\t\tcontinue\n\tcompiled_string += command_class.name + ': ' + command_class.desc + (', ' if command_name != list(server_class.name_to_command)[len(server_class.name_to_command) - 1] else '')\nserver_class.sendall_wrapper(executor, {'output': compiled_string})"
     },
     "AdminPerms": {
         "name": "grant_admin",
@@ -14,14 +19,14 @@
         "desc": "Change your name",
         "on_exec": "import re\nimport exec\ncleaned_name = re.sub('\"|b\"| ', '', argument)[:20]\nif server_class.verify_name(executor, cleaned_name) == False:\n\traise exec.ExecInterrupt\nserver_class.recieve_name_change(executor, cleaned_name)\nserver_class.sendall_wrapper(executor, {'output': 'Your name has been changed to: ' + cleaned_name + '.'})"
     },
+    "ViewMOTD": {
+        "name": "motd",
+        "desc": "See the currently set Message Of The Day",
+        "on_exec": "server_class.sendall_wrapper(executor, {'output': server_class.message_of_the_day})"
+    },
     "Who": {
         "name": "who",
         "desc": "List all currently connected clients",
         "on_exec": "compiled_string = ''\nserver_class.sendall_wrapper(executor, {'output': 'Total connected: ' + str(len(server_class.socket_to_name))})\nfor name in server_class.socket_to_name.values():\n\tcompiled_string += name + (', ' if name != list(server_class.socket_to_name.values())[len(server_class.socket_to_name) - 1] else '')\nserver_class.sendall_wrapper(executor, {'output': compiled_string})"
-    },
-    "ChangeColor": {
-        "name": "change_color",
-        "desc": "Change your name color ('red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'reset')",
-        "on_exec": "import exec\npossible_colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']\nargument = argument.lower()\nif argument == 'reset':\n\tserver_class.socket_to_color.pop(executor)\n\traise exec.ExecInterrupt\nif argument in possible_colors:\n\tserver_class.socket_to_color[executor] = argument\n\tserver_class.sendall_wrapper(executor, {'output': 'Your color is now ' + argument + '.'})\n\traise exec.ExecInterrupt\nserver_class.sendall_wrapper(executor, {'output': 'Color not found.'})"
     }
 }

@@ -1,0 +1,22 @@
+{
+    "Ban": {
+        "name": "ban",
+        "desc": "Ban a provided IP address",
+        "on_exec": "import exec\nif executor not in server_class.administrators:\n\tserver_class.sendall_wrapper(executor, {'output': 'Insufficient permissions.'})\n\traise exec.ExecInterrupt\ntry:\n\tsocket_object = list(server_class.socket_to_ip.keys())[list(server_class.socket_to_ip.values())[0].index(argument)]\n\tif socket_object in server_class.administrators:\n\t\tserver_class.sendall_wrapper(executor, {'output': 'User is an administrator; cannot ban.'})\n\t\traise exec.ExecInterrupt\n\tserver_class.ban_connection(socket_object, executor)\nexcept ValueError:\n\tserver_class.sendall_wrapper(executor, {'output': 'IP address not found online; banning regardless.'})\n\tserver_class.ban_connection(argument, executor)\nserver_class.sendall_wrapper(executor, {'output': 'IP address banned.'})"
+    },
+    "Unban": {
+        "name": "unban",
+        "desc": "Unban a provided IP address",
+        "on_exec": "import exec\nif executor not in server_class.administrators:\n\tserver_class.sendall_wrapper(executor, {'output': 'Insufficient permissions.'})\n\traise exec.ExecInterrupt\nserver_class.unban_connection(argument, executor)"
+    },
+    "Kick": {
+        "name": "kick",
+        "desc": "Kick a provided IP address",
+        "on_exec": "import exec\nif executor not in server_class.administrators:\n\tserver_class.sendall_wrapper(executor, {'output': 'Insufficient permissions.'})\n\traise exec.ExecInterrupt\nserver_class.kick_connection(argument, executor)"
+    },
+    "SetMOTD": {
+        "name": "set_motd",
+        "desc": "Set the Message Of The Day",
+        "on_exec": "import exec\nif executor not in server_class.administrators:\n\tserver_class.sendall_wrapper(executor, {'output': 'Insufficient permissions.'})\n\traise exec.ExecInterrupt\nserver_class.set_motd(executor, argument)"
+    }    
+}

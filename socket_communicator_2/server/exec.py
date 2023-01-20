@@ -1,7 +1,10 @@
-# Allows early returning of `exec()`, use `Exec` over `exec` function
+"""
+Allows early returning of `exec()`, use `Exec` over `exec` function
+"""
 
 class ExecInterrupt(Exception):
     pass
+
 
 def Exec(source, globals = None, locals = None):
     try:
