@@ -176,7 +176,7 @@ class Server():
         return True
 
 
-    def recieve_name_change(self, socket: socket.socket, name: str, silent: bool = False):
+    def receive_name_change(self, socket: socket.socket, name: str, silent: bool = False):
         """
         Server-side handling when someone attempts to change their name.
         """

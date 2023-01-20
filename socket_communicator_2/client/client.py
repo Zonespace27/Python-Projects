@@ -12,9 +12,9 @@ import time
 
 class Client():
     """
-    The reciever and sender of the server-to-client connection. \n
-    When the client sends a message, the server recieves it and sends it to all other connected clients. \n
-    When a client recieves a message, it adds it to the curses-based console screen, scrolling up existing text as much as needed.
+    The receiver and sender of the server-to-client connection. \n
+    When the client sends a message, the server receives it and sends it to all other connected clients. \n
+    When a client receives a message, it adds it to the curses-based console screen, scrolling up existing text as much as needed.
     """
 
     def __init__(self):
@@ -49,16 +49,16 @@ class Client():
 
         ### Everything else
 
-        self.text_end = self.y_size - const.TEXTCHAT_END_POS
+        self.text_end: int = self.y_size - const.TEXTCHAT_END_POS
 
         # Client display name
-        self.name = ""
+        self.name: string = ""
 
         # Dict of text on a line + time.time() : text on a line
-        self.line_text = {}
+        self.line_text: dict = {}
 
         # The set of currently written out characters
-        self.inputted_characters = ""
+        self.inputted_characters: string = ""
 
         # A string containing all valid ascii input text characters
         self.valid_characters = string.printable.replace("\n", "")
@@ -68,7 +68,7 @@ class Client():
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             os.chdir(os.path.dirname(sys.argv[0]))
             sock.connect((self.HOST, self.PORT))
-            listen_thread = threading.Thread(target=self.recieve_messages, args=(sock,))  
+            listen_thread = threading.Thread(target=self.receive_messages, args=(sock,))  
             listen_thread.start()
             # Registering with the server
             sock.sendall(pickle.dumps({"name": "", "input": ""}))
@@ -80,9 +80,9 @@ class Client():
                     self.update_input_box()
 
 
-    def recieve_messages(self, socket_class: socket.socket):
+    def receive_messages(self, socket_class: socket.socket):
         """
-        A method that's called on a seperate thread, will always listen for messages from the server and insert them onto the screen.
+        A method that's called on a separate thread, will always listen for messages from the server and insert them onto the screen.
         """
         while True:
             try:
@@ -93,6 +93,7 @@ class Client():
                 return
 
             data = pickle.loads(data)
+            #Sanitizes out ', ", b', b", and \n. The "b" indicates the string is a bytes literal string
             sanitized_data = re.sub("\'|b\'|\"|b\"|\\n", "", data["output"])
 
             self.line_text_multiline_check(((data["name"] + ": ") if ("name" in data.keys()) else "") + sanitized_data + "\n")
@@ -105,7 +106,7 @@ class Client():
         Slightly misleading name. Adds calls add_line_text after checking
         if the text wouldn't fit in one line, and splits it out into multiple messages if so.
         """
-        list_of_lines = []
+        list_of_lines: list = []
         if len(text_to_check) > self.x_size:
             line_count = trunc(len(text_to_check) / self.x_size)
 

@@ -17,7 +17,7 @@
     "ChangeName": {
         "name": "change_name",
         "desc": "Change your name",
-        "on_exec": "import re\nimport exec\ncleaned_name = re.sub('\"|b\"| ', '', argument)[:20]\nif server_class.verify_name(executor, cleaned_name) == False:\n\traise exec.ExecInterrupt\nserver_class.recieve_name_change(executor, cleaned_name)\nserver_class.sendall_wrapper(executor, {'output': 'Your name has been changed to: ' + cleaned_name + '.'})"
+        "on_exec": "import re\nimport exec\ncleaned_name = re.sub('\"|b\"| ', '', argument)[:20]\nif server_class.verify_name(executor, cleaned_name) == False:\n\traise exec.ExecInterrupt\nserver_class.receive_name_change(executor, cleaned_name)\nserver_class.sendall_wrapper(executor, {'output': 'Your name has been changed to: ' + cleaned_name + '.'})"
     },
     "ViewMOTD": {
         "name": "motd",

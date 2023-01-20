@@ -54,10 +54,10 @@ def command_name_change(executor, server_class, argument):
     cleaned_name = re.sub('\"|b\"| ', '', argument)[:20]
     if server_class.verify_name(executor, cleaned_name) == False:
         raise exec.ExecInterrupt
-    server_class.recieve_name_change(executor, cleaned_name)
+    server_class.receive_name_change(executor, cleaned_name)
     server_class.sendall_wrapper(executor, {'output': 'Your name has been changed to: ' + cleaned_name + '.'})
 
-# "import re\nimport exec\ncleaned_name = re.sub('\"|b\"| ', '', argument)[:20]\nif server_class.verify_name(executor, cleaned_name) == False:\n\traise exec.ExecInterrupt\nserver_class.recieve_name_change(executor, cleaned_name)\nserver_class.sendall_wrapper(executor, {'output': 'Your name has been changed to: ' + cleaned_name + '.'})"
+# "import re\nimport exec\ncleaned_name = re.sub('\"|b\"| ', '', argument)[:20]\nif server_class.verify_name(executor, cleaned_name) == False:\n\traise exec.ExecInterrupt\nserver_class.receive_name_change(executor, cleaned_name)\nserver_class.sendall_wrapper(executor, {'output': 'Your name has been changed to: ' + cleaned_name + '.'})"
 
 # List all connected clients
 def command_who(executor, server_class, argument):

@@ -6,9 +6,9 @@ import time
 class MessageHandler():
     """
     The class for handling all the server's messages. \n
-    When the server recieves a message, it inserts it into the message handler's queue. 
+    When the server receives a message, it inserts it into the message handler's queue. 
     Every 0.1 seconds, it processes the queue, which will broadcast each unsent message to all connected clients after handling commands. \n
-    While this method does induce a <=0.1s delay to all messages, testing has shown that it's imperceptable to users.
+    While this method does induce a <=0.1s delay to all messages, testing has shown that it's imperceptible to users.
     """
     message_queue = []
 
@@ -39,13 +39,13 @@ class MessageHandler():
             name = data.get("name")
             conn = data.get("connection")
             if conn not in self.server.socket_to_name:
-                self.server.recieve_name_change(conn, name)
+                self.server.receive_name_change(conn, name)
 
             name = self.server.socket_to_name[conn]
-            # TODO: document regex more
             input_data = data.get("input")
             if(isinstance(input_data, bytes)):
                 input_data = input_data.decode()
+            #Sanitizes out ', ", b', and b". The "b" indicates the string is a bytes literal string
             text = re.sub("\'|b\'|\"|b\"", "", input_data)
 
             if len(text) <= 0:
@@ -87,7 +87,7 @@ class MessageHandler():
                     continue
                             
             try:
-                print(f"Recieved: {text} || from {self.server.get_full_name(conn)}")
+                print(f"received: {text} || from {self.server.get_full_name(conn)}")
                 pickle_list = {"name": name, "output": text}
                 for connection in self.server.all_connections:
                     self.server.sendall_wrapper(connection, pickle_list)
@@ -96,7 +96,7 @@ class MessageHandler():
 
             except KeyError:
                 # Considering we *can't* check if there's a name attached, we just don't send it
-                print(f"Recieved: {text} || from an unexpectedly disconnected client.")
+                print(f"received: {text} || from an unexpectedly disconnected client.")
 
     
     def add_message(self, message_to_add: str):
