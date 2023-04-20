@@ -68,7 +68,7 @@ class Server():
             if not data:
                 continue
             
-            data = pickle.loads(data)
+            data = pickle.loads(data) # This converts the data into a dict, {"input": CLIENT INPUT HERE}, with "name":"" as well if the client is initially registering with the server
             data["connection"] = conn
 
             if conn in self.socket_to_name.keys():
